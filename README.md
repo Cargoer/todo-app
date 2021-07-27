@@ -1,24 +1,54 @@
 # todo-app
 
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
+## usage
+```shell
+npm run serve
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## 开发日志
+### 20210721
+1. 完成基本功能实现：
+* 显示所有待办事项
+* 增加新的待办事项（通过按钮或回车键）
+* 勾选完成待办事项
+* 筛选完成/未完成的待办事项
+* 移除待办事项
+2. 完成UI的完善
 
-### Lints and fixes files
-```
-yarn lint
-```
+### 20210722
+1. 实现响应式布局（暂无思路，先搁置）
+2. 增加显示时间功能：
+* 当前时间（已完成）
+* 待办事项添加时的时间（已完成，待完善）
+* 待办事项完成的时间
+遇到的坑：
+new Date().getMonth()是从0开始的，得到实际月份需要加一
+new Date().getDay()是获取星期的而不是几号的
+new Date().getDate()才是获取几号的
+3. 更改显示逻辑：
+* 默认优先显示未完成的待办事项而不是全部事项（已完成）
+* 已完成事项进行UI区分，并不予删除（已完成）
+* 未完成的待办事项勾选后，过渡消失（难）
+4. 编辑栏增加输入逻辑：
+* 最多输入字数（已完成）
+* 最多显示字数,超出最多显示字数部分用...显示（已完成）
+5. 对于可能出现错误勾选的情况，再次点击可取消勾选（已完成）
+6. 显示各列表事项的数目
+7. 勾选的变化UI增加过渡
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 20210726
+1. 批量移除：
+* 切换到该模式，对批量选择的item进行移除（已完成）
+* 点击全选，移除全部（已完成）
+* 模式的切换：点击“批量移除”及“完成”、已移除全部（已完成）
+* 当处于批量移除模式时，无法添加新的待办事项（已完成）
+
+### 20210727
+1. 添加拖拽功能：
+* 拖拽项目调整顺序
+* 将项目拖拽到其他分类标签下可实现移动（难）
+2. 进一步构思其他标签模块：
+* 数据分离：store - module？
+* 组件是否可以复用？
+初步构思：收集箱和愿望清单项目卡片不需要勾选完成，项目清单的项目卡片则可以点击展开详情
+3. 路由问题：点击当前界面的tab报错 "NavigationDuplicated: Avoided redundant navigation to current location"

@@ -1,28 +1,55 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" >
+    <!-- <div class="header">
+      <h1>待办事项</h1>
+      <Datetime />
+    </div>
+    
+    <TodoInput />
+    <TodoList /> -->
+    <div class="tabs">
+      <button @click="$router.push('/collection')">Collection</button>
+      <button @click="$router.push('/todolist')">Todo List</button>
+      <button @click="$router.push('/programlist')">Program List</button>
+      <button @click="$router.push('/wishlist')">Wish List</button>
+    </div>
+    <router-view></router-view>
+    
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    // TodoInput,
+    // TodoList,
+    // Datetime,
+    
+  },
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.tabs {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+.tabs button {
+  width: 150px;
+  height: 60px;
+  background-color: #3d619b;
+  color: #fff;
+  border-radius: 10px;
 }
 </style>
