@@ -1,5 +1,5 @@
 <template>
-    <div v-if="todoItems.length">
+    <div v-if="curTodoList.length">
         <div class="multi-remove-option">
             <div v-if="!multiRemove" class="button" @click="switchMultiRemove">批量移除</div>
             <div v-else class="flex-row">
@@ -18,13 +18,15 @@
             </div>
         </div>
         <div v-if="listMode === 'all'" class="list">
-            <transition-group name="list" tag="p">
-                <TodoItem
-                    v-for="todoItem in todoItems"
-                    :key="todoItem.id"
-                    :todo="todoItem"
-                />
-            </transition-group>
+            <vuedraggable>
+                <transition-group name="list" tag="p">
+                    <TodoItem
+                        v-for="todoItem in todoItems"
+                        :key="todoItem.id"
+                        :todo="todoItem"
+                    />
+                </transition-group>
+            </vuedraggable>
             <!-- <TodoItem
                 v-for="todoItem in todoItems"
                 :key="todoItem.id"
@@ -57,19 +59,38 @@
         </div>
     </div>
     <div v-else class="empty">
-        Try add a new to do item!
+        <div v-if="listMode === 'done'">
+            Try to finish a todo item!
+        </div>
+        <div v-else>
+            Try to add a new todo item!
+        </div>
+        
     </div>
 </template>
 
 <script>
 import TodoItem from './TodoItem'
 import { mapState, mapGetters } from 'vuex'
+import vuedraggable from 'vuedraggable'
 
 export default {
-    components: {TodoItem},
+    components: {TodoItem, vuedraggable},
     computed: {
         ...mapState(['todoItems', 'listMode', 'multiRemove', 'removeList']),
         ...mapGetters(['getDoneTodoItems', 'getNotDoneTodoItems']),
+        curTodoList() {
+            switch (this.listMode){
+                case 'all':
+                    return this.todoItems;
+                case 'done':
+                    return this.getDoneTodoItems;
+                case 'notdone':
+                    return this.getNotDoneTodoItems;
+                default:
+                    return [];
+            }
+        }
     },
     methods: {
         switchMultiRemove() {

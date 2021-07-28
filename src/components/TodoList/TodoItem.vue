@@ -1,4 +1,5 @@
 <template>
+    <!-- <draggable> -->
     <div class="todo-item" :class="{'done-item': todo.isDone}">
         <div v-if="!multiRemove">
             <div @click="switchStatus(todo.id)" class="complete-check"></div>
@@ -22,12 +23,18 @@
         <div class="remove" @click="removeTodoItem(todo.id)">
             ×
         </div>
-        <div class="create-time">创建于 {{todo.createTime}}</div>
+        <div class="time-info">
+            <div class="create-time">创建于 {{todo.createTime}}</div>
+            <div v-if="todo.isDone" class="finish-time">完成于 {{todo.finishTime}}</div>
+        </div>
+        
     </div>
+    <!-- </draggable> -->
 </template>
 
 <script>
 import {mapState} from 'vuex'
+// import vuedraggable from 'vuedraggable'
 export default {
     name: 'TodoItem',
     props: {
@@ -35,6 +42,7 @@ export default {
             
         }
     },
+    // components: {vuedraggable},
     methods: {
         switchStatus(id) {
             this.$store.commit('switchStatus', id)
@@ -130,12 +138,14 @@ input[type=checkbox] {
     pointer-events: none;
     color: grey;
 }
-.create-time {
+.time-info {
     position: absolute;
     left: 50px;
     bottom: 8px;
     font-size: 8px;
     color: #fff;
+    display: flex;
+    gap: 10px;
 }
 .chosen {
     background-color: #55FFF1;

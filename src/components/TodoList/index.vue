@@ -14,14 +14,14 @@
 <script>
 import TodoInput from './TodoInput.vue'
 import TodoItemList from './TodoItemList.vue'
-import TodoItem from './TodoItem.vue'
+// import TodoItem from './TodoItem.vue'
 import Datetime from '../Datetime.vue'
 export default {
   name: 'todolist',
   components: {
     TodoInput,
     TodoItemList,
-    TodoItem,
+    // TodoItem,
     Datetime
   }
 }

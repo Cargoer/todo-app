@@ -1,35 +1,35 @@
 <template>
-    <div class="collection-item">
-        <!-- <div v-if="!multiRemove">
-             <div @click="switchStatus(todo.id)" class="complete-check"></div> 
-        </div> -->
-        <div v-if="multiRemove">
-            <input 
-                ref="checkbox" 
-                type="checkbox" 
-                @change="switchChosenStatus(todo.id)"
-                :checked="removeList.indexOf(todo.id) !== -1"
-            >
+    <vuedraggable>
+        <div class="collection-item">
+            <!-- <div v-if="!multiRemove">
+                <div @click="switchStatus(todo.id)" class="complete-check"></div> 
+            </div> -->
+            <div v-if="multiRemove">
+                <input 
+                    ref="checkbox" 
+                    type="checkbox" 
+                    @change="switchChosenStatus(todo.id)"
+                    :checked="removeList.indexOf(todo.id) !== -1"
+                >
+            </div>
+            <div class="content">
+                {{ todo.content }}
+            </div>
+            <div class="remove" @click="removeTodoItem(todo.id)">
+                ×
+            </div>
+            <div class="create-time">创建于 {{todo.createTime}}</div>
         </div>
-        <div class="content">
-            {{ todo.content }}
-        </div>
-        <div class="remove" @click="removeTodoItem(todo.id)">
-            ×
-        </div>
-        <div class="create-time">创建于 {{todo.createTime}}</div>
-    </div>
+    </vuedraggable>
 </template>
 
 <script>
 import {mapState} from 'vuex'
+import vuedraggable from 'vuedraggable'
 export default {
     name: 'TodoItem',
-    props: {
-        todo: {
-            
-        }
-    },
+    props: {todo},
+    components: {vuedraggable},
     methods: {
         switchStatus(id) {
             this.$store.commit('switchStatus', id)

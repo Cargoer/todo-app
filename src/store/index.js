@@ -10,7 +10,8 @@ const store = new Vuex.Store({
         id: 0,
         content: "记账",
         isDone: false,
-        createTime: '2020/5/6'
+        createTime: '2020/5/6',
+        finishTime: null
       }
     ],
     listMode: 'notdone',
@@ -44,7 +45,8 @@ const store = new Vuex.Store({
             id: state.count++,
             content: state.newTodoText,
             isDone: false,
-            createTime: date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate()
+            createTime: date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate(),
+            finishTime: null
           })
         }
         state.newTodoText = ''
@@ -75,7 +77,14 @@ const store = new Vuex.Store({
     switchStatus(state, id){
       state.todoItems = state.todoItems.map((item, index) => {
         console.log(index)
-        item.id === id && (item.isDone = !item.isDone)
+        // item.id === id && (item.isDone = !item.isDone)
+        if(item.id === id){
+          item.isDone = !item.isDone;
+          if(item.isDone){
+            let date = new Date();
+            item.finishTime = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+          }
+        }
         // item.isDone = item.id === id? !item.isDone: item.isDone;
         return item;
       })
