@@ -73,3 +73,5 @@ new Date().getDate()才是获取几号的
 1. 增加记忆功能
 * 利用localStorage来读取和保存已经记录的todo项，这样下一次启动应用时还是可以看到上次关闭时的记录
 * 问题：localStorage的容量只有5M，满了怎么办
+
+test conflict on anyway
