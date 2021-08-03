@@ -17,45 +17,16 @@
                 
             </div>
         </div>
-        <div v-if="listMode === 'all'" class="list">
+        <div class="list">
             <vuedraggable>
                 <transition-group name="list" tag="p">
                     <TodoItem
-                        v-for="todoItem in todoItems"
+                        v-for="todoItem in curTodoList"
                         :key="todoItem.id"
                         :todo="todoItem"
                     />
                 </transition-group>
             </vuedraggable>
-            <!-- <TodoItem
-                v-for="todoItem in todoItems"
-                :key="todoItem.id"
-                :todo="todoItem"
-            /> -->
-        </div>
-        <div v-if="listMode === 'done'" class="list">
-            <transition-group name="list" tag="p">
-                <TodoItem
-                    v-for="todoItem in getDoneTodoItems"
-                    :key="todoItem.id"
-                    :todo="todoItem"
-                />
-            </transition-group>
-            
-        </div>
-        <div v-if="listMode === 'notdone'" class="list">
-            <transition-group name="list" tag="p">
-                <TodoItem
-                    v-for="todoItem in getNotDoneTodoItems"
-                    :key="todoItem.id"
-                    :todo="todoItem"
-                />
-            </transition-group>
-            <!-- <TodoItem
-                v-for="todoItem in getNotDoneTodoItems"
-                :key="todoItem.id"
-                :todo="todoItem"
-            /> -->
         </div>
     </div>
     <div v-else class="empty">
@@ -77,8 +48,14 @@ import vuedraggable from 'vuedraggable'
 export default {
     components: {TodoItem, vuedraggable},
     computed: {
-        ...mapState(['todoItems', 'listMode', 'multiRemove', 'removeList']),
+        ...mapState(['todoItems', 'multiRemove', 'removeList']),
         ...mapGetters(['getDoneTodoItems', 'getNotDoneTodoItems']),
+        listMode() {
+            if(this.$route.params.listmode){
+                return this.$route.params.listmode
+            }
+            return this.$store.state.listMode
+        },
         curTodoList() {
             switch (this.listMode){
                 case 'all':
@@ -90,7 +67,7 @@ export default {
                 default:
                     return [];
             }
-        }
+        },
     },
     methods: {
         switchMultiRemove() {
@@ -109,7 +86,19 @@ export default {
             if(this.todoItems.length === 0){
                 this.switchMultiRemove()
             }
-        }
+        },
+        $route(){
+            this.$store.commit('setListMode', this.listMode)
+            console.log("watch "+this.listMode)
+        } 
+    },
+    created() {
+        this.$store.commit('setListMode', this.listMode)
+        console.log("created "+this.listMode)
+    },
+    destroyed() {
+        this.$store.commit('storeItems')
+        // alert(localStorage.getItem('todoItems'))
     }
 }
 </script>

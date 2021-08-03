@@ -75,19 +75,39 @@ const store = new Vuex.Store({
       })
     },
     switchStatus(state, id){
+      let firstDonePos = -1, toMoveItemPos = -1
+      // 改变todo项的完成状态
       state.todoItems = state.todoItems.map((item, index) => {
-        console.log(index)
+        if(firstDonePos === -1 && item.isDone){
+          firstDonePos = index
+        }
+        // item.isDone = item.id === id? !item.isDone: item.isDone;
         // item.id === id && (item.isDone = !item.isDone)
         if(item.id === id){
+          toMoveItemPos = index
           item.isDone = !item.isDone;
           if(item.isDone){
             let date = new Date();
             item.finishTime = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
           }
         }
-        // item.isDone = item.id === id? !item.isDone: item.isDone;
         return item;
       })
+      // 调整todo项在all列表的位置
+      let toMoveItem = state.todoItems[toMoveItemPos]
+      if(toMoveItem.isDone){
+        if(firstDonePos === -1){
+          state.todoItems.push(toMoveItem)
+        }
+        else{
+          state.todoItems.splice(firstDonePos, 0, toMoveItem)
+        }
+        state.todoItems.splice(toMoveItemPos, 1)
+      }
+      else {
+        state.todoItems.splice(toMoveItemPos, 1)
+        state.todoItems.unshift(toMoveItem)
+      }
     },
     switchMultiRemove(state) {
       state.multiRemove = !state.multiRemove
@@ -102,7 +122,21 @@ const store = new Vuex.Store({
         state.removeList = []
       }
       console.log(state.removeList.length)
+    },
+    setListMode(state, listMode) {
+      state.listMode = listMode
+    },
+    initItems(state) {
+      let ls_items = JSON.parse(localStorage.getItem('todoItems'))
+      state.todoItems = ls_items? ls_items: []
+    },
+    storeItems(state) {
+      localStorage.setItem('todoItems', JSON.stringify(state.todoItems))
     }
+
+    // modifyTodoItems(state, getters){
+    //   state.todoItems = [...getters.getNotDoneTodoItems, ...getters.getDoneTodoItems]
+    // }
   },
 })
 

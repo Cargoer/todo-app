@@ -4,14 +4,14 @@
             <input type="text" v-model.trim="newTodoText" maxlength="100" :disabled="multiRemove">
             <button @click="addTodoItem">+</button>
         </div>
-        <div class="choose-mode">
+        <!-- <div class="choose-mode">
             <input type="radio" value="notdone" id="notdone" v-model="listMode">
             <label for="notdone" :class="{active: listMode === 'notdone'}">未完成</label>
             <input type="radio" value="done" id="done" v-model="listMode">
             <label for="done" :class="{active: listMode === 'done'}">已完成</label>
             <input type="radio" value="all" id="all" v-model="listMode">
             <label for="all" :class="{active: listMode === 'all'}">全部</label>
-        </div>
+        </div> -->
     </div>
 </template>
 

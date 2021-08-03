@@ -25,7 +25,10 @@
         </div>
         <div class="time-info">
             <div class="create-time">创建于 {{todo.createTime}}</div>
-            <div v-if="todo.isDone" class="finish-time">完成于 {{todo.finishTime}}</div>
+            <div v-if="todo.isDone" class="finish-time">
+                <div v-if="todo.createTime === todo.finishTime">当日完成</div>
+                <div v-else>完成于 {{todo.finishTime}}</div>
+            </div>
         </div>
         
     </div>
@@ -46,6 +49,7 @@ export default {
     methods: {
         switchStatus(id) {
             this.$store.commit('switchStatus', id)
+            // this.$store.commit('modifyTodoItems')
             // this.$refs.check.classList.add('completed')
         },
         removeTodoItem(id) {

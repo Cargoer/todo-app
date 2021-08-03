@@ -47,7 +47,6 @@ export default {
                 console.log("delete")
                 this.$store.commit('deleteRemoveItem', id)
             }
-            
         },
 
     },

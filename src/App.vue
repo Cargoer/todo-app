@@ -8,12 +8,13 @@
     <TodoInput />
     <TodoList /> -->
     <div class="tabs">
-      <button @click="$router.push('/collection')">Collection</button>
-      <button @click="$router.push('/todolist')">Todo List</button>
-      <button @click="$router.push('/programlist')">Program List</button>
-      <button @click="$router.push('/wishlist')">Wish List</button>
+      <button @click="goto('/collection')">Collection</button>
+      <button @click="goto('/todolist')">Todo List</button>
+      <button @click="goto('/programlist')">Program List</button>
+      <button @click="goto('/wishlist')">Wish List</button>
     </div>
     <router-view></router-view>
+    
     
   </div>
 </template>
@@ -28,6 +29,19 @@ export default {
     // Datetime,
     
   },
+  methods: {
+    goto(url) {
+      this.$router.push(url)
+      console.log(this.$store.state.listMode)
+    }
+  },
+  created() {
+    this.$store.commit('initItems')
+  },
+  // updated() {
+  //   this.$store.commit('storeItems')
+  //   alert(localStorage.getItem('todoItems'))
+  // }
 }
 </script>
 
@@ -51,5 +65,6 @@ export default {
   background-color: #3d619b;
   color: #fff;
   border-radius: 10px;
+  cursor: pointer;
 }
 </style>

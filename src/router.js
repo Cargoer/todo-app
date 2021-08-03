@@ -4,6 +4,7 @@ import TodoList from './components/TodoList'
 import Collection from './components/Collection'
 import ProgramList from './components/ProgramList'
 import WishList from './components/WishList'
+import TodoItemList from './components/TodoList/TodoItemList'
 
 Vue.use(VueRouter)
 
@@ -21,7 +22,17 @@ const routes = [
   },
   {
     path: '/todolist',
-    component: TodoList
+    component: TodoList,
+    children: [
+      {
+        path: '/todolist/:listmode',
+        component: TodoItemList
+      },
+      {
+        path: '/',
+        redirect: '/todolist/notdone'
+      }
+    ],
   },
   {
     path: '/programlist',
@@ -33,7 +44,7 @@ const routes = [
   },
   {
     path: '/',
-    redirect: '/todolist'
+    redirect: '/todolist/notdone'
   }
   
 ]
