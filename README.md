@@ -72,14 +72,12 @@ new Date().getDate()才是获取几号的
 ### 20210803
 1. 增加记忆功能
 * 利用localStorage来读取和保存已经记录的todo项，这样下一次启动应用时还是可以看到上次关闭时的记录
-<<<<<<< HEAD
 * 问题：localStorage的容量只有5M，满了怎么办
 
-<<<<<<< HEAD
-test conflict on anyway
-=======
-test conflict on local_storage
->>>>>>> bbc6021 (test conflict on local_storage)
-=======
-* 问题：localStorage的容量只有5M，满了怎么办（a change on local_storage branch）
->>>>>>> 9588e30 (read me change)
+### 20210804
+1. 当列表项过多，对后面的项目进行隐藏处理，保持页面整洁（待完善）
+* 设置非展开状态下最大可显示数
+* 设置展开按钮，点击后可展开所有项
+* 若应显示数小于等于最大可显示数，不显示展开按钮
+* 怎么关闭展开？
+2. 点击todo项弹出详细页（已完成，待完善）
