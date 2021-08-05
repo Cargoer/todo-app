@@ -14,8 +14,6 @@
       <button @click="goto('/wishlist')">Wish List</button>
     </div>
     <router-view></router-view>
-    
-    
   </div>
 </template>
 
@@ -52,6 +50,7 @@ export default {
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 30px;
 }
 .tabs {

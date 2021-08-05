@@ -98,7 +98,7 @@ export default {
     },
     destroyed() {
         this.$store.commit('storeItems')
-        // alert(localStorage.getItem('todoItems'))
+        alert(localStorage.getItem('todoItems'))
     }
 }
 </script>

@@ -32,7 +32,8 @@
         </div>
 
         <div class="detailPopup" :style="{display:showDetail? 'flex': 'none'}">
-            <div>{{todo.content}}</div>
+            <div>{{todo.id}}{{todo.content}}</div>
+            <textarea name="detail" id="itemDetail" cols="30" rows="10" v-model="todoDetail"></textarea>
             <div class="closeDetail" @click.stop="showDetail=false">×</div>
         </div>
         
@@ -74,12 +75,26 @@ export default {
                 console.log("delete")
                 this.$store.commit('deleteRemoveItem', id)
             }
-            
         },
 
     },
     computed: {
-        ...mapState(['multiRemove', 'removeList'])
+        ...mapState(['multiRemove', 'removeList']),
+        todoDetail: {
+            get(){
+                return this.$store.state.todoItems.find(item => {
+                    return item.id === this.todo.id
+                }).detail
+            },
+            set(val) {
+                this.$store.state.todoItems.map(item => {
+                    if(item.id === this.todo.id){
+                        item.detail = val
+                    }
+                    return item
+                })
+            }
+        }
     }
     
 }
@@ -172,6 +187,7 @@ input[type=checkbox] {
     background-color: #508da3;
     border: 2px solid #fff;
     display: none;
+    flex-direction: column;
     padding: 20px;
     gap: 15px;
     position: absolute;
@@ -180,7 +196,16 @@ input[type=checkbox] {
     transform: translate(-50%, -50%);
     z-index: 5;
 }
+.detailPopup #itemDetail {
+    outline: none;
+    border: none;
+    background-color: #508da3;
+    font-size: 14px;
+}
 .detailPopup .closeDetail {
     cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 </style>
