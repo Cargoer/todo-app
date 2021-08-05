@@ -1,8 +1,8 @@
 <template>
     <!-- <draggable> -->
-    <div class="todo-item" :class="{'done-item': todo.isDone}">
+    <div class="todo-item" :class="{'done-item': todo.isDone}" @click.stop="showDetail=true">
         <div v-if="!multiRemove">
-            <div @click="switchStatus(todo.id)" class="complete-check"></div>
+            <div @click.stop="switchStatus(todo.id)" class="complete-check"></div>
         </div>
         <div v-else>
             <input 
@@ -20,7 +20,7 @@
         <div class="content">
             {{ todo.content }}
         </div>
-        <div class="remove" @click="removeTodoItem(todo.id)">
+        <div class="remove" @click.stop="removeTodoItem(todo.id)">
             ×
         </div>
         <div class="time-info">
@@ -29,6 +29,11 @@
                 <div v-if="todo.createTime === todo.finishTime">当日完成</div>
                 <div v-else>完成于 {{todo.finishTime}}</div>
             </div>
+        </div>
+
+        <div class="detailPopup" :style="{display:showDetail? 'flex': 'none'}">
+            <div>{{todo.content}}</div>
+            <div class="closeDetail" @click.stop="showDetail=false">×</div>
         </div>
         
     </div>
@@ -43,6 +48,11 @@ export default {
     props: {
         todo: {
             
+        }
+    },
+    data(){
+        return {
+            showDetail: false
         }
     },
     // components: {vuedraggable},
@@ -153,5 +163,24 @@ input[type=checkbox] {
 }
 .chosen {
     background-color: #55FFF1;
+}
+.detailPopup {
+    color: #fff;
+    width: 200px;
+    height: 250px;
+    border-radius: 15px;
+    background-color: #508da3;
+    border: 2px solid #fff;
+    display: none;
+    padding: 20px;
+    gap: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+}
+.detailPopup .closeDetail {
+    cursor: pointer;
 }
 </style>
