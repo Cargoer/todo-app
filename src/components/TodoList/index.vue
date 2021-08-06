@@ -51,7 +51,7 @@ export default {
     text-align: center;
     width: 80px;
     height: 30px;
-    border: 3px solid #5B7FA7;
+    border: 3px solid var(--list-tab-color);
     border-radius: 8px;
 
     font-size: 16px;
@@ -60,6 +60,6 @@ export default {
 }
 .choose-mode div.active {
     color: #fff;
-    background-color: #5B7FA7;
+    background-color: var(--list-tab-color);
 }
 </style>

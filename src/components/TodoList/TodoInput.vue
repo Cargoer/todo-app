@@ -61,7 +61,7 @@ export default {
     /* background-color: ; */
     padding: 10px 20px;
     border-radius: 40px;
-    border: 3px solid #5B7FA7;
+    border: 3px solid var(--input-color);
     
 }
 .input-content input {
@@ -87,15 +87,13 @@ export default {
     top: 0;
 
     font-weight: bold;
-    background-color: #5B7FA7;
+    background-color: var(--input-color);
     border: none;
     border-radius: 50%;
 }
-.choose-mode {
+/* .choose-mode {
     display: flex;
     gap: 10px;
-    /* border-bottom: 3px solid #5B7FA7; */
-    
 }
 .choose-mode input {
     display: none;
@@ -113,5 +111,5 @@ export default {
 .choose-mode label.active {
     color: #fff;
     background-color: #5B7FA7;
-}
+} */
 </style>

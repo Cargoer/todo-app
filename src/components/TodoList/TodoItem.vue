@@ -32,7 +32,8 @@
         </div>
 
         <div class="detailPopup" :style="{display:showDetail? 'flex': 'none'}">
-            <div>{{todo.id}}{{todo.content}}</div>
+            <input type="text" name="detailContent" id="detailContent" v-model="detailContent">
+            <div>{{todo.content}}</div>
             <textarea name="detail" id="itemDetail" cols="30" rows="10" v-model="todoDetail"></textarea>
             <div class="closeDetail" @click.stop="showDetail=false">×</div>
         </div>
@@ -94,6 +95,21 @@ export default {
                     return item
                 })
             }
+        },
+        detailContent: {
+            get(){
+                return this.$store.state.todoItems.find(item => {
+                    return item.id === this.todo.id
+                }).content
+            },
+            set(val) {
+                this.$store.state.todoItems.map(item => {
+                    if(item.id === this.todo.id){
+                        item.content = val
+                    }
+                    return item
+                })
+            }
         }
     }
     
@@ -111,14 +127,14 @@ export default {
     /* justify-content: center; */
     align-items: center;
     margin-bottom: 10px;
-    background-color: #508da3;
+    background-color: var(--item-bg-color);
     border-radius: 8px;
     position: relative;
 }
 .complete-check {
     width: 1.2em;
     height: 1.2em;
-    border: 3px solid #5b7fa7;
+    border: 3px solid var(--complete-check-border-color);
     border-radius: 50%;
     background-color: #fff;
 }
@@ -135,7 +151,7 @@ input[type=checkbox] {
     transform: translateY(-8px);
 }
 .done-item .complete-check {
-    background-color: #55FFF1;
+    background-color: var(--complete-bg-color);
     position: relative;
 }
 .done-item .complete-check::after {
@@ -181,8 +197,8 @@ input[type=checkbox] {
 }
 .detailPopup {
     color: #fff;
-    width: 200px;
-    height: 250px;
+    width: 440px;
+    height: 400px;
     border-radius: 15px;
     background-color: #508da3;
     border: 2px solid #fff;
@@ -195,6 +211,7 @@ input[type=checkbox] {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 5;
+    transition: .5s;
 }
 .detailPopup #itemDetail {
     outline: none;
@@ -207,5 +224,11 @@ input[type=checkbox] {
     position: absolute;
     top: 10px;
     right: 10px;
+}
+.detailPopup #detailContent {
+    outline: none;
+    border: none;
+    background-color: #508da3;
+    color: #fff;
 }
 </style>
