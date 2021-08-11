@@ -35,6 +35,7 @@ export default {
   },
   created() {
     this.$store.commit('initItems')
+    console.log("app created: multiRemove is ", this.$store.state.multiRemove)
   },
   // updated() {
   //   this.$store.commit('storeItems')

@@ -1,6 +1,6 @@
 <template>
     <div class="todo-input">
-        <div class="input-content" @keyup.enter="addTodoItem">
+        <div class="input-content" @keyup.enter="addTodoItem" @click="showMultiRemove">
             <input type="text" v-model.trim="newTodoText" maxlength="100" :disabled="multiRemove">
             <button @click="addTodoItem">+</button>
         </div>
@@ -21,6 +21,9 @@ export default {
     methods: {
         addTodoItem() {
             this.$store.commit('addTodoItem');
+        },
+        showMultiRemove() {
+            console.log(this.$store.state.multiRemove);
         }
     },
     computed: {
@@ -43,6 +46,14 @@ export default {
             }
         },
         ...mapState(['multiRemove'])
+    },
+    watch: {
+        multiRemove: function(){
+            console.log(this.multiRemove)
+        }
+    },
+    created() {
+        console.log("TodoInput created: multiRemove is ", this.$store.state.multiRemove);
     }
 }
 </script>

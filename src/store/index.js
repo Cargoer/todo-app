@@ -1,10 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import Airtable from 'airtable'
 Vue.use(Vuex);
+
+// 获取airtable的GTDRecord base
+var base = new Airtable({apiKey: 'keyZ4ydi5sz7NHOIZ'}).base('appSszMoXtHrRBupD');
+// var todoTable = base('todolist')
 
 const store = new Vuex.Store({
   state: {
-    count: -1,
+    // count: -1,
     todoItems: [],
     listMode: 'notdone',
     newTodoText: '',
@@ -18,30 +23,47 @@ const store = new Vuex.Store({
     getNotDoneTodoItems(state) {
       return state.todoItems.filter(item => !item.isDone);
     },
-    // getTodoItems(state) {
-    //   return state.todoItems;
-    // },
-    // getListMode(state) {
-    //   return state.listMode;
-    // },
-    // getNewTodoText(state){
-    //   return state.newTodoText;
-    // }
   },
   mutations: {
     /* todo项操作相关 */ 
     addTodoItem(state){
       if(!state.multiRemove){
-        let date = new Date()
         if(state.newTodoText){
-          state.todoItems.unshift({
-            id: state.count++,
+          let date = new Date();
+          let newTodo = {
+            // id: state.count++,
             content: state.newTodoText,
             isDone: false,
-            createTime: date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate(),
+            createTime: date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
             finishTime: null,
             detail: ''
+          }
+          
+          // 把新的todo项加入airtable里
+          base('todolist').create(newTodo, (err, record) => {
+              if(err) {
+                console.log("create: ", err);
+                return;
+              }
+              // 获取插入操作产生的唯一id
+              let record_id = record.getId()
+              newTodo.id = record_id
+              // 把新的todo项加入state里（加上id）
+              state.todoItems.unshift(newTodo)
+              // 更新airtable里的id
+              base('todolist').update(record_id, {
+                "id": record_id
+              }, (err, record) => {
+                if(err) {
+                  console.log("update_id: ", err)
+                  return
+                }
+                console.log("updated_id: ", record.get('id'))
+              })
+              console.log("record_id: ", record_id)
           })
+          
+          
         }
         state.newTodoText = ''
       }
@@ -50,10 +72,13 @@ const store = new Vuex.Store({
       state.todoItems = state.todoItems.filter(item => {
         return item.id !== id;
       })
+      base('todolist').destroy([id])
     },
     // 更改todo项的完成状态
     switchStatus(state, id){
       let firstDonePos = -1, toMoveItemPos = -1
+      let date = new Date();
+      let finish_time = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
       // 改变todo项的完成状态
       state.todoItems = state.todoItems.map((item, index) => {
         if(firstDonePos === -1 && item.isDone){
@@ -65,12 +90,12 @@ const store = new Vuex.Store({
           toMoveItemPos = index
           item.isDone = !item.isDone;
           if(item.isDone){
-            let date = new Date();
-            item.finishTime = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+            item.finishTime = finish_time;
           }
         }
         return item;
       })
+
       // 调整todo项在all列表的位置
       let toMoveItem = state.todoItems[toMoveItemPos]
       if(toMoveItem.isDone){
@@ -86,6 +111,12 @@ const store = new Vuex.Store({
         state.todoItems.splice(toMoveItemPos, 1)
         state.todoItems.unshift(toMoveItem)
       }
+
+      // 在airtable里更新
+      base('todolist').update(id, {
+        "isDone": true,
+        "finishTime": finish_time,
+      })
     },
     
     /* 批量移除相关 */
@@ -106,6 +137,9 @@ const store = new Vuex.Store({
     // 批量移除
     removeMultipleItems(state){
       state.todoItems = state.todoItems.filter(item => {
+        if(state.removeList.indexOf(item.id) !== -1) {
+          base('todolist').destroy([item.id])
+        }
         return state.removeList.indexOf(item.id) === -1;
       })
     },
@@ -130,29 +164,56 @@ const store = new Vuex.Store({
     },
 
     /* localStorage和初始化相关 */
-    initItems(state) {
-      let ls_items = JSON.parse(localStorage.getItem('todoItems'))
-      state.todoItems = ls_items? ls_items: []
-      if(!state.todoItems.length){
-        state.count = 0
-      }
-      else{
-        let id_list = state.todoItems.map(item => item.id)
-        state.count = Math.max(...id_list)+1
-      }
-    },
-    storeItems(state) {
-      state.todoItems = state.todoItems.map(item => {
-        if(item.detail === undefined){
-          item.detail = ''
-        }
-        return item
-      })
-      localStorage.setItem('todoItems', JSON.stringify(state.todoItems))
-    }
+    // initItems(state) {
+    //   let ls_items = JSON.parse(localStorage.getItem('todoItems'))
+    //   state.todoItems = ls_items? ls_items: []
+    //   if(!state.todoItems.length){
+    //     state.count = 0
+    //   }
+    //   else{
+    //     let id_list = state.todoItems.map(item => item.id)
+    //     state.count = Math.max(...id_list)+1
+    //   }
+    // },
+    // storeItems(state) {
+    //   state.todoItems = state.todoItems.map(item => {
+    //     if(item.detail === undefined){
+    //       item.detail = ''
+    //     }
+    //     return item
+    //   })
+    //   localStorage.setItem('todoItems', JSON.stringify(state.todoItems))
+    // }
 
-    // modifyTodoItems(state, getters){
-    //   state.todoItems = [...getters.getNotDoneTodoItems, ...getters.getDoneTodoItems]
+    /* airtable相关 */
+    initItems(state) {
+      base('todolist')
+      .select({
+        view: "Grid view",
+      })
+      .firstPage((err, records) => { // eachPage?
+        if(err) {
+          console.log(err);
+          return;
+        }
+        state.todoItems = records.map(item => item.fields)
+      })
+    },
+    // storeItems(state) {
+    //   state.todoItems.forEach(item => {
+    //     base('todolist').create([
+    //       {
+    //         "fields": {
+    //           "id": item.id,
+    //           "content": item.content,
+    //           "isDone": item.isDone,
+    //           "createTime": item.createTime,
+    //           "finishTime": item.finishTime,
+    //           "detail": item.detail,
+    //         }
+    //       }
+    //     ])
+    //   })
     // }
   },
 })

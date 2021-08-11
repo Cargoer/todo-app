@@ -83,7 +83,7 @@ export default {
     },
     watch: {
         todoItems: function(){
-            if(this.todoItems.length === 0){
+            if(this.todoItems.length === 0 && this.multiRemove){
                 this.switchMultiRemove()
             }
         },
@@ -94,12 +94,16 @@ export default {
     },
     created() {
         this.$store.commit('setListMode', this.listMode)
-        console.log("created "+this.listMode)
+        // console.log("created "+this.listMode)
+        console.log("TodoItemList created: multiRemove is ", this.$store.state.multiRemove);
     },
-    destroyed() {
-        this.$store.commit('storeItems')
-        alert(localStorage.getItem('todoItems'))
-    }
+    mounted() {
+        console.log("TodoItemList mounted: multiRemove is ", this.$store.state.multiRemove);
+    },
+    // destroyed() {
+    //     this.$store.commit('storeItems')
+    //     alert(localStorage.getItem('todoItems'))
+    // }
 }
 </script>
 
