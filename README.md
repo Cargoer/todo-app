@@ -97,3 +97,5 @@ new Date().getDate()才是获取几号的
 
 ### 20210812
 - [ ] 新增关闭detail页的方式：点击detail页以外的区域
+* 增加登录操作
+1. 用airtable保存账号密码信息

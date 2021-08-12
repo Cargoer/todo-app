@@ -132,11 +132,9 @@ const store = new Vuex.Store({
         if(err){
           console.log("err: ", err)
         }
-        console.log("update detail success!")
+        // console.log("update detail success!")
       })
-      console.log("id in store/index: ", payload.id)
-      console.log("detail in store/index val: ", payload.val)
-      console.log("I worked!")
+      console.log(state.todoItems)
     },
     
     /* 批量移除相关 */

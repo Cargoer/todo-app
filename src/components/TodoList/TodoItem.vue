@@ -32,7 +32,7 @@
         </div>
 
         <div class="detailPopup" :style="{display:showDetail? 'flex': 'none'}">
-            <div>{{todo.id}}{{todo.content}}</div>
+            <div>{{todo.content}}</div>
             <textarea name="detail" id="itemDetail" cols="30" rows="10" v-model="todoDetail"></textarea>
             <div class="closeDetail" @click.stop="showDetail=false">×</div>
         </div>
@@ -87,7 +87,7 @@ export default {
                 }).detail
             },
             set(val) {
-                console.log("detail in TodoItem val: ", val)
+                // console.log("detail in TodoItem val: ", val)
                 this.$store.commit('updateDetail', {id: this.todo.id, val: val})
                 // 添加更新detail操作
             }
