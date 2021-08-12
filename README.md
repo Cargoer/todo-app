@@ -93,4 +93,7 @@ new Date().getDate()才是获取几号的
 1. 用airtable获取数据不能直接将records作为数据，而应该用records.fields
 2. 加载速度相对比较缓慢（尤其是添加操作）
 3. 重新加载后在all模式下无法根据已完成和未完成排序，而是根据在airtable的存储顺序排序
-4. detail的值暂时无法更新到airtable
+4. detail的值暂时无法更新到airtable（已完成）
+
+### 20210812
+- [ ] 新增关闭detail页的方式：点击detail页以外的区域

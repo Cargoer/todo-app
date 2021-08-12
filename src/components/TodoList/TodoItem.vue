@@ -87,12 +87,9 @@ export default {
                 }).detail
             },
             set(val) {
-                this.$store.state.todoItems.map(item => {
-                    if(item.id === this.todo.id){
-                        item.detail = val
-                    }
-                    return item
-                })
+                console.log("detail in TodoItem val: ", val)
+                this.$store.commit('updateDetail', {id: this.todo.id, val: val})
+                // 添加更新detail操作
             }
         }
     }

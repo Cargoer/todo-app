@@ -118,6 +118,26 @@ const store = new Vuex.Store({
         "finishTime": finish_time,
       })
     },
+    // 更新todo项的detail
+    updateDetail(state, payload) {
+      state.todoItems.map(item => {
+        if(item.id === payload.id){
+            item.detail = payload.val
+        }
+        return item
+      })
+      base('todolist').update(payload.id, {
+        "detail": payload.val
+      }, (err) => {
+        if(err){
+          console.log("err: ", err)
+        }
+        console.log("update detail success!")
+      })
+      console.log("id in store/index: ", payload.id)
+      console.log("detail in store/index val: ", payload.val)
+      console.log("I worked!")
+    },
     
     /* 批量移除相关 */
     // 移除列表增加要移除的todo项
