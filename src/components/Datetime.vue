@@ -55,7 +55,7 @@ export default {
   text-align: center;
   line-height: 20px;
   padding: 8px;
-  box-shadow: 1px 1px 5px #5B7FA7;
+  box-shadow: 1px 1px 5px var(--datetime-shadow-color);
   border-radius: 6px;
 }
 </style>
