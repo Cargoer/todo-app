@@ -23,6 +23,10 @@
         <div class="remove" @click.stop="removeTodoItem(todo.id)">
             ×
         </div>
+        <!-- 设置星标 -->
+        <div class="star" @click.stop="starItem(todo.id)">
+            <i class="fa fa-star-o fa-lg"></i>
+        </div>
         <div class="time-info">
             <div class="create-time">创建于 {{todo.createTime}}</div>
             <div v-if="todo.isDone" class="finish-time">
@@ -171,6 +175,10 @@ input[type=checkbox] {
     padding: 15px;
     font-size: 30px;
     color: #fff;
+}
+.star {
+    position: absolute;
+    right: 1.5em;
 }
 .done-item .content {
     text-decoration: line-through;

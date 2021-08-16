@@ -4,7 +4,7 @@ import Airtable from 'airtable'
 Vue.use(Vuex);
 
 // 获取airtable的GTDRecord base
-var base = new Airtable({apiKey: 'YOUR_API_KEY'}).base('YOUR_BASE');
+var base = new Airtable({apiKey: 'keyZ4ydi5sz7NHOIZ'}).base('appSszMoXtHrRBupD');
 // var todoTable = base('todolist')
 
 const store = new Vuex.Store({
@@ -36,7 +36,8 @@ const store = new Vuex.Store({
             isDone: false,
             createTime: date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
             finishTime: null,
-            detail: ''
+            detail: '',
+            star: false,
           }
           
           // 把新的todo项加入airtable里

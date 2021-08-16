@@ -61,5 +61,6 @@ export default {
 .choose-mode div.active {
     color: #fff;
     background-color: var(--list-tab-color);
+    /* test modify */
 }
 </style>
