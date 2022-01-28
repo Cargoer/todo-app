@@ -1,6 +1,19 @@
 # todo-app
 
 ## usage
+本项目采用[airtable](https://airtable.com/)进行数据存储，若你想运行使用此项目，请：
+1. 申请一个airtable账号
+2. 创建一个用来存储todo数据的base（名称可以自己定义）
+3. 在上一步创建的base里添加一个名为todolist的表格
+4. 打开[airtable api](https://airtable.com/api)，进入之前创建的base，点击右边的JavaScript选项，下拉找到api key和base key
+```javascript
+const base = require('api_key').base('base_key');
+```
+5. 将项目下src/store/index.js里的api key和base key换成你自己的
+```javascript
+var base = new Airtable({apiKey: 'your_api_key'}).base('your_base_key');
+```
+6. 运行项目
 ```shell
 npm install
 npm run serve
@@ -102,4 +115,5 @@ new Date().getDate()才是获取几号的
 ### 20210812
 - [ ] 新增关闭detail页的方式：点击detail页以外的区域
 * 增加登录操作
-1. 用airtable保存账号密码信息
+1. 用airtable保存账号密码信息（这其实违背了我做这个功能的初衷）
+2. 以API Key和base key作为登录凭证

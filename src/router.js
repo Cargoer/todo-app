@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import TodoList from './components/TodoList'
-import Collection from './components/Collection'
-import ProgramList from './components/ProgramList'
-import WishList from './components/WishList'
-import TodoItemList from './components/TodoList/TodoItemList'
+import TodoList from './pages/todoList/index'
+import Collection from './pages/collection'
+import ProgramList from './pages/programList'
+import WishList from './pages/wishList'
+import TodoItemList from './pages/todoList/components/todoItemList'
+import ChooseAddress from './pages/map'
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,10 @@ const routes = [
   {
     path: '/',
     redirect: '/todolist/notdone'
+  },
+  {
+    path: '/chooseAddress',
+    component: ChooseAddress
   }
   
 ]

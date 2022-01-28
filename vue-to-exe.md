@@ -45,7 +45,7 @@ mainWindow.loadFile('index.html')
 mainWindow.loadFile('./dist/index.html')
 ```
 
-### step 6 安装依赖
+### step 6 安装依赖 
 
 建议先执行下面两行命令以避免electron下载很慢或出错
 
@@ -68,7 +68,11 @@ npm run start
 
 预览应该可以看到项目且可以正常使用，若白屏可能是step 2没有弄好
 
-参考原文里还有一步是下载依赖eletron-packager，但是npm install貌似已经安装好了
+参考原文里还有一步是下载依赖eletron-packager，但是npm install貌似已经安装好了，没有的话请单独安装：
+
+```shell
+npm install electron-packager --save-dev
+```
 
 ### step 7 添加命令
 

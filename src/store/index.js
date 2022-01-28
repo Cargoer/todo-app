@@ -3,8 +3,8 @@ import Vuex from "vuex";
 import Airtable from 'airtable'
 Vue.use(Vuex);
 
-// 获取airtable的GTDRecord base
-var base = new Airtable({apiKey: 'YOUR_API_KEY'}).base('YOUR_BASE');
+// 获取airtable的GTDRecord state.base
+// var base = new Airtable({apiKey: 'keyZ4ydi5sz7NHOIZ'}).state.base('appSszMoXtHrRBupD');
 // var todoTable = base('todolist')
 
 const store = new Vuex.Store({
@@ -14,7 +14,8 @@ const store = new Vuex.Store({
     listMode: 'notdone',
     newTodoText: '',
     multiRemove: false,
-    removeList: []
+    removeList: [],
+    base: new Airtable({apiKey: 'YOU_API_KEY'}).base('appSszMoXtHrRBupD')
   },
   getters: {
     getDoneTodoItems(state) {
@@ -40,7 +41,7 @@ const store = new Vuex.Store({
           }
           
           // 把新的todo项加入airtable里
-          base('todolist').create(newTodo, (err, record) => {
+          state.state.base('todolist').create(newTodo, (err, record) => {
               if(err) {
                 console.log("create: ", err);
                 return;
@@ -51,7 +52,7 @@ const store = new Vuex.Store({
               // 把新的todo项加入state里（加上id）
               state.todoItems.unshift(newTodo)
               // 更新airtable里的id
-              base('todolist').update(record_id, {
+              state.state.base('todolist').update(record_id, {
                 "id": record_id
               }, (err, record) => {
                 if(err) {
@@ -72,7 +73,7 @@ const store = new Vuex.Store({
       state.todoItems = state.todoItems.filter(item => {
         return item.id !== id;
       })
-      base('todolist').destroy([id])
+      state.state.base('todolist').destroy([id])
     },
     // 更改todo项的完成状态
     switchStatus(state, id){
@@ -113,7 +114,7 @@ const store = new Vuex.Store({
       }
 
       // 在airtable里更新
-      base('todolist').update(id, {
+      state.base('todolist').update(id, {
         "isDone": true,
         "finishTime": finish_time,
       })
@@ -126,7 +127,7 @@ const store = new Vuex.Store({
         }
         return item
       })
-      base('todolist').update(payload.id, {
+      state.base('todolist').update(payload.id, {
         "detail": payload.val
       }, (err) => {
         if(err){
@@ -156,7 +157,7 @@ const store = new Vuex.Store({
     removeMultipleItems(state){
       state.todoItems = state.todoItems.filter(item => {
         if(state.removeList.indexOf(item.id) !== -1) {
-          base('todolist').destroy([item.id])
+          state.base('todolist').destroy([item.id])
         }
         return state.removeList.indexOf(item.id) === -1;
       })
@@ -205,7 +206,7 @@ const store = new Vuex.Store({
 
     /* airtable相关 */
     initItems(state) {
-      base('todolist')
+      state.base('todolist')
       .select({
         view: "Grid view",
       })
@@ -219,7 +220,7 @@ const store = new Vuex.Store({
     },
     // storeItems(state) {
     //   state.todoItems.forEach(item => {
-    //     base('todolist').create([
+    //     state.base('todolist').create([
     //       {
     //         "fields": {
     //           "id": item.id,
@@ -233,6 +234,9 @@ const store = new Vuex.Store({
     //     ])
     //   })
     // }
+    initBase(state, payload) {
+      state.base = new Airtable({apiKey: payload.api_key}).base(payload.base_key)
+    }
   },
 })
 

@@ -1,10 +1,12 @@
 <template>
   <div id="todo-list" >
+    <Tabbar />
+    
     <div class="header">
       <h1>待办事项</h1>
       <Datetime />
     </div>
-    
+
     <TodoInput />
     <div class="choose-mode">
         <div :class="{active: listMode === 'notdone'}" @click="$router.push('/todolist/notdone')">未完成</div>
@@ -16,10 +18,11 @@
 </template>
 
 <script>
-import TodoInput from './TodoInput.vue'
+import TodoInput from './components/todoInput'
 // import TodoItemList from './TodoItemList.vue'
 // import TodoItem from './TodoItem.vue'
-import Datetime from '../Datetime.vue'
+import Datetime from '../../components/datetime'
+import Tabbar from '../../components/tabbar.vue'
 import {mapState} from 'vuex'
 export default {
   name: 'todolist',
@@ -27,7 +30,8 @@ export default {
     TodoInput,
     // TodoItemList,
     // TodoItem,
-    Datetime
+    Datetime,
+    Tabbar
   },
   computed: {
     ...mapState(['listMode'])

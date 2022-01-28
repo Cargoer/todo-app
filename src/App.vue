@@ -7,7 +7,7 @@
     
     <TodoInput />
     <TodoList /> -->
-    <div class="tabs">
+    <!-- <div class="tabs">
       <button @click="goto('/collection')">Collection</button>
       <button @click="goto('/todolist')">Todo List</button>
       <button @click="goto('/programlist')">Program List</button>
@@ -17,6 +17,8 @@
       <option value="1">颜色1</option>
       <option value="2">颜色2</option>
     </select>
+    <button class="button" @click="goChooseAddress">地图选点</button>
+    <div>地图信息：</div> -->
     <router-view></router-view>
   </div>
 </template>
@@ -41,6 +43,9 @@ export default {
       this.$router.push(url)
       console.log(this.$store.state.listMode)
     },
+    goChooseAddress() {
+      this.$router.push('/chooseAddress')
+    }
   },
   created() {
     this.$store.commit('initItems')
@@ -100,4 +105,8 @@ export default {
   position: absolute;
 
 } */
+.button {
+  width: 150px;
+  height: 60px;
+}
 </style>
