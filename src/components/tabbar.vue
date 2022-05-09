@@ -12,12 +12,23 @@
       <option value="2">颜色2</option>
     </select>
     <button class="button" @click="goChooseAddress">地图选点</button>
-    <div>地图信息：</div>
+    <div>【地图信息】：</div>
+    <div>城市名称：{{deliveryAddress.cityname}}</div>
+    <div>地点名称：{{deliveryAddress.poiname}}</div>
+    <div>经纬度：{{deliveryAddress.latlng.lat}} - {{deliveryAddress.latlng.lng}}</div>
+    <div class="set_default_area">
+      <div>设置默认地址</div>
+      <div class="set_default_switch" :style="setDefaultBg" @click="isSetDefault = !isSetDefault">
+        <div class="switch_pointer" :style="pointerPosition"></div>
+      </div>
+    </div>
     <div class="map_area" v-if="showMap">
       <iframe id="mapPage" width="100%" height="100%" frameborder=0
         src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=VHBBZ-6CGLD-RD24X-H2TKY-2FE2H-YMFCJ&referer=choose_address">
       </iframe>
     </div>
+    <button class="button" @click="backToPrev">返回</button>
+    <map name="map"></map>
   </div>
 </template>
 
@@ -28,7 +39,19 @@ export default {
     return {
       themeColor: 1,
       showMap: false,
-      deliveryAddress: {}
+      deliveryAddress: {
+        cityname: undefined,
+        latlng: {lat: undefined, lng: undefined}
+      },
+      isSetDefault: false,
+    }
+  },
+  computed: {
+    setDefaultBg() {
+      return this.isSetDefault? 'background: #fe7e52;': 'background: #efe7e4;'
+    },
+    pointerPosition() {
+      return this.isSetDefault? 'left: 51px;': 'left: 4px;'
     }
   },
   mounted() {
@@ -51,6 +74,10 @@ export default {
     goChooseAddress() {
       // this.$router.push('/chooseAddress')
       this.showMap = true
+    },
+    backToPrev() {
+      // this.$router.go(-1)
+      this.$router.back()
     }
   },
 }
@@ -91,5 +118,29 @@ export default {
   left: 0;
   right: 0;
   z-index: 999;
+}
+.set_default_area {
+  display: flex;
+}
+.set_default_area > .set_default_switch {
+  width: 99px;
+  height: 52px;
+  background: #efe7e4;
+  border-radius: 26px;
+  position: relative;
+  margin-left: 10px;
+  /* display: flex;
+  align-items: center; */
+  transition: .5s;
+}
+.set_default_area > .set_default_switch > .switch_pointer {
+  width: 44px;
+  height: 44px;
+  background: #ffffff;
+  border-radius: 100%;
+  box-shadow: -2px 0px 20px 2px rgba(237,227,223,0.54); 
+  position: absolute;
+  top: 4px;
+  transition: .5s;
 }
 </style>
